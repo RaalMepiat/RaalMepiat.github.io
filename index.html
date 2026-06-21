@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alain Raal Mepiat Ayamou | Mechatronics Portfolio</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           VARIABLES & RESETS
+           ========================================================================== */
+        :root {
+            --primary: #111111;
+            --secondary: #666666;
+            --accent: #0066cc;
+            --bg-light: #f9f9f9;
+            --bg-dark: #0a0a0a;
+            --text-dark: #111111;
+            --text-light: #ffffff;
+            --border: #eeeeee;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            background-color: #ffffff;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           STYLING DES ANIMATIONS (DÉFANT : CACHÉ)
+           ========================================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        /* Classe active ajoutée par le JavaScript lors du scroll */
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Délais progressifs pour l'effet de cascade (un après l'autre) */
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+
+        /* ==========================================================================
+           STRUCTURE & LAYOUT
+           ========================================================================== */
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        .nav-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 100px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .badge {
+            align-self: flex-start;
+            background: #eef5ff;
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            font-weight: 700;
+            margin-bottom: 20px;
+            max-width: 800px;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--secondary);
+            max-width: 650px;
+            margin-bottom: 40px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 60px;
+        }
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+        .btn-primary:hover {
+            background: #333;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            border: 1px solid #ccc;
+            color: var(--primary);
+        }
+        .btn-secondary:hover {
+            background: var(--bg-light);
+            transform: translateY(-2px);
+        }
+        .hero-tags {
+            display: flex;
+            gap: 40px;
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+        }
+        .hero-tags span {
+            font-size: 0.9rem;
+            color: var(--secondary);
+        }
+        .hero-tags strong {
+            display: block;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 20px;
+        }
+        .bg-light { background-color: var(--bg-light); }
+        .bg-dark { background-color: var(--bg-dark); color: var(--text-light); }
+
+        .section-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+        .section-badge {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 15px;
+        }
+        .section-header h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .section-header p {
+            color: var(--secondary);
+        }
+
+        .about-cards {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .card-mini {
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card-mini:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .card-mini h3 { font-size: 1.1rem; margin-bottom: 10px; }
+        .card-mini p { font-size: 0.9rem; color: var(--secondary); }
+
+        /* Technical Toolkit */
+        .section-center {
+            max-width: 700px;
+            margin: 0 auto 60px auto;
+            text-align: center;
+        }
+        .section-center h2 { font-size: 2rem; margin-bottom: 15px; }
+        .skills-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .skill-item {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            color: var(--text-dark);
+            transition: transform 0.3s;
+        }
+        .skill-item:hover {
+            transform: translateY(-5px);
+        }
+        .skill-item h3 { margin-bottom: 10px; font-size: 1.2rem; }
+        .skill-item p { color: var(--secondary); font-size: 0.95rem; }
+
+        /* Projects Section */
+        .projects-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .project-card {
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+        }
+        .project-meta {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--secondary);
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+        .project-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: var(--text-dark); }
+        .project-card p { color: var(--secondary); margin-bottom: 20px; flex-grow: 1; }
+        .tags { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tag {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .project-result {
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+            color: var(--primary);
+        }
+
+        /* Contact & Footer */
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .contact-container h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .contact-container p { color: #cccccc; margin-bottom: 40px; font-size: 1.1rem; }
+        .contact-links { display: flex; justify-content: center; gap: 20px; }
+        .contact-btn {
+            background: #ffffff;
+            color: var(--primary);
+            padding: 12px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.2s, transform 0.2s;
+        }
+        .contact-btn:hover { 
+            background: #dddddd; 
+            transform: scale(1.05);
+        }
+
+        footer {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--secondary);
+            border-top: 1px solid var(--border);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-grid, .about-cards, .projects-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero-tags { flex-direction: column; gap: 20px; }
+            footer { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <span class="logo">Mepiat Raal</span>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (S'anime immédiatement au chargement) -->
+    <header class="hero">
+        <div class="hero-content">
+            <div class="badge reveal active">Open to internships · Robotics + Automation</div>
+            <h1 class="reveal active delay-1">Mechatronics engineering student building intelligent machines.</h1>
+            <p class="reveal active delay-2">I combine mechanical design, embedded electronics, programming, and AI thinking to prototype systems that sense, move, automate, and solve real-world engineering problems.</p>
+            <div class="hero-buttons reveal active delay-3">
+                <a href="#contact" class="btn btn-primary">Contact Me</a>
+                <a href="https://github.com/RaalMepiat" target="_blank" class="btn btn-secondary">View GitHub</a>
+            </div>
+            <div class="hero-tags reveal active delay-4">
+                <span><strong>Robotics</strong> Motion + control</span>
+                <span><strong>CAD/CAM</strong> Design to build</span>
+                <span><strong>AI + IoT</strong> Data-driven systems</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="section-grid">
+            <div class="section-header reveal">
+                <span class="section-badge">About Me</span>
+                <h2>Engineering ideas from concept sketches to working prototypes.</h2>
+                <p>I’m a passionate Mechatronics Engineering student interested in robotics, automation, embedded systems, CAD design, programming, and artificial intelligence. My goal is to build practical systems where mechanical structure, electronics, sensors, and software work together reliably.</p>
+            </div>
+            <div class="about-cards">
+                <div class="card-mini reveal delay-1">
+                    <h3>Systems thinking</h3>
+                    <p>Connecting mechanics, control, code, and data into one working loop.</p>
+                </div>
+                <div class="card-mini reveal delay-2">
+                    <h3>Prototype mindset</h3>
+                    <p>Testing early, learning fast, and improving based on measured behavior.</p>
+                </div>
+                <div class="card-mini reveal delay-3">
+                    <h3>Automation focus</h3>
+                    <p>Designing mechanisms and controls that reduce repetitive work.</p>
+                </div>
+                <div class="card-mini reveal delay-4">
+                    <h3>AI curiosity</h3>
+                    <p>Exploring intelligent sensing, prediction, and decision support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Toolkit (Skills) -->
+    <section id="skills" class="section bg-light">
+        <div class="section-center reveal">
+            <span class="section-badge">Technical Toolkit</span>
+            <h2>A multidisciplinary skill set for intelligent physical systems.</h2>
+            <p>From CAD models and circuits to firmware, robotics workflows, and IoT dashboards.</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-item reveal delay-1"><h3>Mechanical Design</h3><p>Mechanisms, tolerances, prototyping, materials, design for assembly.</p></div>
+            <div class="skill-item reveal delay-2"><h3>Electronics</h3><p>Sensors, actuators, microcontrollers (ESP32), power basics, signal flow.</p></div>
+            <div class="skill-item reveal delay-3"><h3>Programming</h3><p>Python, C/C++, control scripts, hardware control, automation logic.</p></div>
+            <div class="skill-item reveal delay-4"><h3>CAD/CAM</h3><p>3D modeling, technical drawings, fabrication planning, iteration.</p></div>
+            <div class="skill-item reveal delay-1"><h3>Home Automation & IoT</h3><p>Home Assistant, ESPHome framework, YAML configurations, connected sensor networks.</p></div>
+            <div class="skill-item reveal delay-2"><h3>Robotics</h3><p>Kinematics, control loops, servo systems, sensing, autonomous behavior.</p></div>
+        </div>
+    </section>
+
+    <!-- Selected Projects -->
+    <section id="projects" class="section">
+        <div class="section-center reveal">
+            <span class="section-badge">Selected Projects</span>
+            <h2>Engineering range and practical application.</h2>
+        </div>
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card reveal delay-1">
+                <div class="project-meta">SERVO · CAD · CONTROL</div>
+                <h3>Automated Drawing Plotter</h3>
+                <p>A precision technical portfolio project focused on joint motion, coordinate mapping, and firmware-driven microcontroller execution.</p>
+                <div class="tags">
+                    <span class="tag">C++</span>
+                    <span class="tag">CNC Control</span>
+                    <span class="tag">Steppers/Servos</span>
+                </div>
+                <div class="project-result">Result: Designed motion architecture and control plan for a highly accurate physical plotter.</div>
+            </div>
+            <!-- Project 2 -->
+            <div class="project-card reveal delay-2">
+                <div class="project-meta">SENSORS · RELAYS · APP</div>
+                <h3>Smart Home Automation System</h3>
+                <p>A custom connected home setup utilizing sensor inputs, relay switching, and automated logic to optimize environmental environments.</p>
+                <div class="tags">
+                    <span class="tag">ESP32</span>
+                    <span class="tag">Home Assistant</span>
+                    <span class="tag">ESPHome</span>
+                </div>
+                <div class="project-result">Result: Outlined and executed a scalable control architecture for efficient automation tracking.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-dark">
+        <div class="contact-container reveal">
+            <span class="section-badge">Contact</span>
+            <h2>Let’s talk about internships, projects, and engineering opportunities.</h2>
+            <p>I’m interested in roles where I can contribute to robotics, automation, embedded systems, and intelligent engineering workflows.</p>
+            <div class="contact-links">
+                <a href="mailto:raalmepiat@example.com" class="contact-btn">Email Me</a>
+                <a href="https://github.com/RaalMepiat" target="_blank" class="contact-btn">GitHub Profile</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Mepiat Raal · Mechatronics · Robotics · Automation</p>
+    </footer>
+
+    <!-- ==========================================================================
+       SCRIPT JAVASCRIPT POUR GÉRER L'APPARITION AU SCROLL
+       ========================================================================== */ -->
+    <script>
+        function revealOnScroll() {
+            // Sélectionne tous les éléments avec la classe .reveal
+            const reveals = document.querySelectorAll('.reveal');
+            
+            for (let i = 0; i < reveals.length; i++) {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveals[i].getBoundingClientRect().top;
+                
+                // Point de déclenchement : l'élément s'active quand il est à 100px du bas de l'écran
+                const elementVisible = 100;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+
+        // Écoute l'événement de défilement (scroll)
+        window.addEventListener('scroll', revealOnScroll);
+
+        // Exécute une fois au chargement au cas où des éléments soient déjà visibles
+        window.addEventListener('load', revealOnScroll);
+    </script>
+
+</body>
+</html>
